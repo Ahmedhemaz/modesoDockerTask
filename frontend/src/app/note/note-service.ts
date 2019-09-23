@@ -1,9 +1,7 @@
 import {EventEmitter, Injectable} from '@angular/core';
-import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {HttpClient} from '@angular/common/http';
 import {NoteModel} from './models/note.model';
-import {map} from 'rxjs/operators';
 import {ActivatedRoute, Params} from '@angular/router';
-import {Response} from '@angular/http';
 
 
 @Injectable({
@@ -12,46 +10,22 @@ import {Response} from '@angular/http';
 export class NoteService {
   noteId: number;
   formErrorStatus = new EventEmitter<boolean>();
-  private Authorization_Type = 'Bearer ';
   constructor(private http: HttpClient) {}
 
   createNote(note: NoteModel) {
-    return this.http.post(
-      'http://localhost:3000/api/v1/notes',
-      this.createFormData(note),
-      {headers: this.createAuthorizationHeader()})
-      .pipe(
-        map((response: Response) => response)
-      );
+    return this.http.post('http://localhost:3000/api/v1/notes', this.createFormData(note));
   }
 
   fetchNoteById(noteId: number) {
-    return this.http.get(`http://localhost:3000/api/v1/notes/${noteId}`
-      // {headers: this.createAuthorizationHeader()}
-      );
-      // .pipe(
-      //   map((response: Response) => response)
-      // );
+    return this.http.get(`http://localhost:3000/api/v1/notes/${noteId}`);
   }
 
   editNote(note: NoteModel) {
-    return this.http.put(
-      `http://localhost:3000/api/v1/notes/${note.id}`,
-      this.createFormData(note),
-      {headers: this.createAuthorizationHeader()})
-      .pipe(
-        map((response: Response) => response)
-      );
+    return this.http.put(`http://localhost:3000/api/v1/notes/${note.id}`, this.createFormData(note));
   }
 
   deleteNote(noteId: number) {
-    return this.http.delete(
-      `http://localhost:3000/api/v1/notes/${noteId}`,
-      {headers: this.createAuthorizationHeader()}
-      )
-      .pipe(
-        map((response: Response) => response)
-      );
+    return this.http.delete(`http://localhost:3000/api/v1/notes/${noteId}`);
   }
 
   // create form data of any object and if the value if file will append formData for file
@@ -68,12 +42,6 @@ export class NoteService {
     return formData;
   }
 
-  createAuthorizationHeader() {
-    const headers: HttpHeaders = new HttpHeaders({
-      Authorization: this.Authorization_Type + this.getTokenFromLocalStorage()
-    });
-    return headers;
-  }
 
   getTokenFromLocalStorage() {
     return JSON.parse(localStorage.getItem('user')).token;

@@ -11,13 +11,18 @@ import {UserService} from '../user/user.service';
 })
 export class AuthService {
 
-  constructor(private http: HttpClient, private router: Router) {}
+  constructor(private http: HttpClient, private router: Router) {
+    if (AuthService.isAuthenticated()) {
+      this.currentUser = UserService.getUserDataFromLocalStorage();
+      this.authenticated = true;
+
+    }
+  }
   formErrorStatus = new EventEmitter<boolean>();
   logOutEmitter = new EventEmitter<boolean>();
   logInEmitter = new EventEmitter<boolean>();
   currentUser: UserModel = null;
-  authenticated: Boolean = false;
-  private Authorization_Type = 'Bearer ';
+  authenticated = false;
 
   static extractDataFromResponseToUserObject(userObject: UserModel, userData: any) {
     userObject.id = userData.data.user.id;
@@ -35,36 +40,15 @@ export class AuthService {
   }
 
   signIn(user: UserModel) {
-    const headers: HttpHeaders = new HttpHeaders(
-      {
-        'Content-Type': 'application/json'
-      });
-    return this.http.post('http://localhost:3000/api/v1/users/login',
-      user, {headers})
-      .pipe(
-        map((response: Response) => response)
-      );
+    return this.http.post('http://localhost:3000/api/v1/users/login', user);
   }
 
   signUp(user: UserModel) {
-    const headers: HttpHeaders = new HttpHeaders({
-      'Content-Type': 'application/json'
-    });
-    return this.http.post('http://localhost:3000/api/v1/users', user, {headers})
-      .pipe(
-        map((response: Response) =>  response)
-      );
+    return this.http.post('http://localhost:3000/api/v1/users', user);
   }
 
   logOut() {
-    const headers: HttpHeaders = new HttpHeaders({
-      'Content-Type': 'application/json',
-      Authorization: this.Authorization_Type + UserService.getTokenFromLocalStorage()
-    });
-    return this.http.post('http://localhost:3000/api/v1/users/logout', this.currentUser, {headers})
-      .pipe(
-        map((response: Response) =>  response)
-      );
+    return this.http.post('http://localhost:3000/api/v1/users/logout', this.currentUser);
   }
 
   hideFormError(formErrorFlag: boolean) {

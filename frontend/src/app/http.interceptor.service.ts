@@ -5,6 +5,7 @@ export class HttpInterceptorService implements HttpInterceptor {
     intercept(req: HttpRequest<any>, next: HttpHandler) {
         return next.handle(this.setAuthorizationHeader(req)).pipe(
             map( response => {
+                console.log(response);
                 return response;
             })
         );
@@ -12,9 +13,9 @@ export class HttpInterceptorService implements HttpInterceptor {
 
 
     private setAuthorizationHeader(requset: HttpRequest<any>) {
-        if (!this.isUserLoggedIn) {
+        if (this.isUserLoggedIn()) {
             const modifiedRequest = requset.clone({
-                headers: requset.headers.set('Authorization', ` Bearer ${JSON.parse(localStorage.getItem('user')).token}`)
+                headers: requset.headers.set('Authorization', `${JSON.parse(localStorage.getItem('user')).token}`)
             });
             return modifiedRequest;
         }

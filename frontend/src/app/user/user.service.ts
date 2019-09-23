@@ -1,8 +1,6 @@
 import {EventEmitter, Injectable} from '@angular/core';
-import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {HttpClient} from '@angular/common/http';
 import {UserModel} from '../auth/models/user.model';
-import {map} from 'rxjs/operators';
-import {Response} from '@angular/http';
 import {NoteService} from '../note/note-service';
 import {NoteModel} from '../note/models/note.model';
 
@@ -15,15 +13,12 @@ export class UserService {
   userNotesEmitter = new EventEmitter<NoteModel[]>();
   userNotesArray: any[] = [];
 
-  private Authorization_Type = 'Bearer ';
-
   static extractDataFromResponseToUserObject(userObject: UserModel, userData: any) {
     userObject.id = userData.data.user.id;
     userObject.email = userData.data.user.email;
     userObject.fullName = userData.data.user.fullName;
     userObject.userName = userData.data.user.userName;
     userObject.token = userData.data.user.jwt;
-    console.log(userObject);
   }
 
   static getUserDataFromLocalStorage() {
@@ -37,34 +32,15 @@ export class UserService {
     return JSON.parse(localStorage.getItem('user')).token;
   }
   fetchUserInfo() {
-    const headers: HttpHeaders = new HttpHeaders({
-      Authorization: this.Authorization_Type + UserService.getTokenFromLocalStorage()
-    });
-    return this.http.get('http://localhost:3000/api/v1/users/me', {headers})
-      .pipe(
-        map((response: Response) => response)
-      );
+    return this.http.get('http://localhost:3000/api/v1/users/me');
   }
 
   fetchUserNotesWithId(userId: number) {
-    const headers: HttpHeaders = new HttpHeaders({
-      Authorization: this.Authorization_Type + UserService.getTokenFromLocalStorage()
-    });
-    return this.http.get(`http://localhost:3000/api/v1/users/${userId}/notes`, {headers})
-      .pipe(
-        map((response: Response) => response)
-      );
+    return this.http.get(`http://localhost:3000/api/v1/users/${userId}/notes`);
   }
 
   editUser(userObject: UserModel) {
-    const headers: HttpHeaders = new HttpHeaders({
-      'Content-Type': 'application/json',
-      Authorization: this.Authorization_Type + UserService.getTokenFromLocalStorage()
-    });
-    return this.http.put('http://localhost:3000/api/v1/users/edit', userObject, {headers})
-      .pipe(
-        map((response: Response) =>  response)
-      );
+    return this.http.put('http://localhost:3000/api/v1/users/edit', userObject);
   }
   hideFormError(formErrorFlag: boolean) {
     this.formErrorStatus.emit(formErrorFlag);

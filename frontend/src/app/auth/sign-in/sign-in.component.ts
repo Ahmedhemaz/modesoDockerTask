@@ -13,7 +13,7 @@ import {UserService} from '../../user/user.service';
 })
 export class SignInComponent implements OnInit {
   loginForm: FormGroup;
-  logInError: Boolean;
+  logInError: boolean;
   constructor(private fb: FormBuilder, private authService: AuthService, private user: UserModel, private router: Router) {
       this.authService.formErrorStatus.subscribe(value => this.logInError = false);
       this.authService.logOutEmitter.subscribe(value => this.authService.authenticated = value);
