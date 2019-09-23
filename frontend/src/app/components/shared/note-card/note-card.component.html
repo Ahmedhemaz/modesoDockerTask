@@ -1,0 +1,75 @@
+<ng-container *ngIf = "note !== undefind">
+            <div  [id]="note.id" class="card mb-10">
+              <div class="card-body" >
+                <div class="row">
+                  <div class="col-8">
+                    <h2 class="card-title">Title: {{note.title}}</h2>
+                  </div>
+                  <div class="col-2">
+                    public: {{note.public}}
+                  </div>
+                  <div class="col-2">
+                    <a id="archive-icon">
+                      <fa name="archive"></fa>
+                    </a>
+      
+                  </div>
+                </div>
+      
+                <div class="row">
+                  <div class="col-2">
+                    <h4>Description:</h4>
+                  </div>
+                  <div class="col" >
+                      <p [ngClass]="[onClickStyle]" (click)="showFullContent()">
+                        {{note.content}}
+                      </p>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-3">
+                    <img id="note-image" data-toggle="modal" data-target="#image-modal"
+                     class="card-img-top" src="http://localhost:3000/api/v1/notes/{{note.id}}/image" alt="Card image cap">
+                  </div>
+                </div>
+                <br>
+                <div class="row">
+                  <div class="col-s-2">
+                        <button (click)="onDiffButton()" class="btn btn-primary">{{diffBtn}}</button>
+                    <!-- <a [routerLink]="['/users',authService.currentUser.id,'notes']" class="btn btn-primary"> &larr; Back </a> -->
+                  </div>
+                  <ng-container *ngIf = "note.userId === this.authService.currentUser.id">
+                    <div class="col-1">
+                            <button (click)="onEditButton()" class="btn btn-success">Edit</button>
+                      <!-- <a [routerLink]="['/note',note.id,'edit']" class="btn btn-success"> Edit </a> -->
+                    </div>
+                    <div class="col-s-1">
+                      <button (click)="onDelete(+note.id)" class="btn btn-danger">Delete</button>
+                    </div>
+                  </ng-container>
+                </div>
+              </div>
+              <div class="card-footer text-muted">
+                Posted on {{note.createdAt | date : 'dd/MM/yyyy , h:mm'}}
+              </div>
+            </div>
+            <!-- Modal -->
+            <div class="modal fade bd-example-modal-lg" id="image-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+                <div class="modal-dialog modal-lg" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                    <div class="modal-body" align="center">
+                      <img id="modal-image" src="http://localhost:3000/api/v1/notes/{{note.id}}/image" alt="Card image cap">
+                    </div>
+                  </div>
+                </div>
+            </div>
+  
+</ng-container>
+
+      
+      

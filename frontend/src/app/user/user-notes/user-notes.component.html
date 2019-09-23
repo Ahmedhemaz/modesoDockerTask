@@ -1,0 +1,25 @@
+<div class="container">
+  <ng-container *ngIf="errorMessage ; else notes_content">
+    <div  class="alert alert-danger col-10 " style=" padding-left: 27% ; margin:auto; ">
+      {{errorMessage}}
+    </div>
+  </ng-container>
+  <ng-template #notes_content>
+    <ng-container *ngIf="notesArray.length !==0; else other_content">
+      <div *ngFor="let note of notesArray | paginate: {itemsPerPage:2,currentPage:page}" [id]="+note.id" class="card mb-10">
+
+        <app-note-card [note]="note" (delete)="onDelete($event)"
+         [diffBtn]="'Read More'" (diffBtnEmmiter)="onReadMore($event)"
+        ></app-note-card>
+       
+      </div>
+
+      <pagination-controls (pageChange)="page = $event"></pagination-controls>
+    </ng-container>
+  </ng-template>
+<ng-template #other_content>
+  <h1>
+    No Content Public Notes Found
+  </h1>
+</ng-template>
+</div>

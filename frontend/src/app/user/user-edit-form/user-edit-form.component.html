@@ -1,0 +1,69 @@
+<form  [formGroup]="editForm" (ngSubmit)="onSubmit()">
+  <div>
+
+    <app-input-field  [type]="'text'"  [inputFieldId]="'fullName'" [controlGroup]='editForm'  [controlName]="'fullName'"
+                      [name]="'fullName'"  [placeHolder]="'Enter FullName'"
+                      (click)="this.userService.hideFormError(editError)"></app-input-field>
+    <div *ngIf="editForm.controls['fullName'].invalid &&
+       (editForm.controls['fullName'].dirty || editForm.controls['fullName'].touched)"
+         class="alert alert-danger col-4" style="margin-top:20px;">
+      <div *ngIf="editForm.controls['fullName'].errors.required">
+        name is required.
+      </div>
+      <div *ngIf="editForm.controls['fullName'].errors.minlength">
+        Fullname must be more than 5 characters
+      </div>
+    </div>
+
+
+    <app-input-field  [type]="'text'"  [inputFieldId]="'userName'" [controlGroup]='editForm'  [controlName]="'userName'"
+                      [name]="'userName'"  [placeHolder]="'Enter userName'"
+                      (click)="this.userService.hideFormError(editError)"></app-input-field>
+    <div *ngIf="editForm.controls['userName'].invalid &&
+       (editForm.controls['userName'].dirty || editForm.controls['userName'].touched)"
+         class="alert alert-danger col-4" style="margin-top:20px;">
+      <div *ngIf="editForm.controls['userName'].errors.required">
+        Username is required.
+      </div>
+      <div *ngIf="editForm.controls['userName'].errors.minlength">
+        userName must be more than 5 characters
+      </div>
+    </div>
+
+
+    <app-input-field  [type]="'email'"  [inputFieldId]="'email'" [controlGroup]='editForm'  [controlName]="'email'"
+                      [name]="'email'"  aria-describedby="emailHelp" [placeHolder]="'Enter Email'"
+                      (click)="this.userService.hideFormError(editError)"></app-input-field>
+    <div *ngIf="editForm.controls['email'].invalid &&
+       (editForm.controls['email'].dirty || editForm.controls['email'].touched)"
+         class="alert alert-danger col-4" style="margin-top:20px;">
+      <div *ngIf="editForm.controls['email'].errors.required">
+        Email is required.
+      </div>
+      <div *ngIf="editForm.controls['email'].errors.email">
+        Must be Email Format
+      </div>
+    </div>
+
+
+    <app-input-field  [type]="'password'"  [inputFieldId]="'password'" [controlGroup]='editForm'
+                      [controlName]="'password'" [name]="'password'"  aria-describedby="passwordHelp"
+                      [placeHolder]="'Enter password'"
+                      (click)="this.userService.hideFormError(editError)"></app-input-field>
+    <div *ngIf="editForm.controls['password'].invalid &&
+       (editForm.controls['password'].dirty || editForm.controls['password'].touched)"
+         class="alert alert-danger col-4" style="margin-top:20px;">
+      <div *ngIf="editForm.controls['password'].errors.required">
+        Password is required.
+      </div>
+      <div *ngIf="editForm.controls['password'].errors.minlength">
+        Password must be more than 8 characters
+      </div>
+    </div>
+  </div>
+  <div *ngIf="editError" class="alert alert-danger col-4" style="margin-top:20px;">
+    {{ editErrorMessage }}
+  </div>
+  <button type="submit" class="btn btn-primary">Submit</button>
+
+</form>

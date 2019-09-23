@@ -1,0 +1,13 @@
+<div class="container">
+    <ng-container *ngIf="errorMessage ; else notes_content">
+        <div  class="alert alert-danger col-10 " style=" padding-left: 27% ; margin:auto; ">
+            {{errorMessage}}
+        </div>
+    </ng-container>
+    <ng-template #notes_content>
+        <app-note-card [note]="note" (delete)="onDelete($event)"
+        [diffBtn]="'Back'" (diffBtnEmmiter)="onBackButton($event)"
+        ></app-note-card>
+    </ng-template>
+</div>
+

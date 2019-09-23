@@ -1,0 +1,68 @@
+<form  [formGroup]="noteForm" (ngSubmit)="onSubmit()">
+  <div>
+
+    <app-input-field  [type]="'text'"  [inputFieldId]="'title'" [controlGroup]='noteForm'  [controlName]="'title'"
+                      [name]="'title'"  [placeHolder]="'Enter FullName'"
+                      (click)="this.noteService.hideFormError(noteError)"></app-input-field>
+    <div *ngIf="noteForm.controls['title'].invalid &&
+       (noteForm.controls['title'].dirty || noteForm.controls['title'].touched)"
+         class="alert alert-danger col-4" style="margin-top:20px;">
+      <div *ngIf="noteForm.controls['title'].errors.required">
+        Title is required.
+      </div>
+      <div *ngIf="noteForm.controls['title'].errors.minlength">
+        Title must be more than 5 characters
+      </div>
+    </div>
+
+
+    <app-input-field  [type]="'text'"  [inputFieldId]="'content'" [controlGroup]='noteForm'  [controlName]="'content'"
+                      [name]="'content'"  [placeHolder]="'Enter content'"
+                      (click)="this.noteService.hideFormError(noteError)"></app-input-field>
+    <div *ngIf="noteForm.controls['content'].invalid &&
+       (noteForm.controls['content'].dirty || noteForm.controls['content'].touched)"
+         class="alert alert-danger col-4" style="margin-top:20px;">
+      <div *ngIf="noteForm.controls['content'].errors.required">
+        Content is required.
+      </div>
+      <div *ngIf="noteForm.controls['content'].errors.minlength">
+        Content must be more than 5 characters
+      </div>
+    </div>
+
+    <div class="col-3">
+      <img class="card-img-top" src="http://localhost:3000/api/v1/notes/{{+note.id}}/image" alt="Card image cap">
+    </div>
+    <app-input-field  [type]="'file'"  [inputFieldId]="'image'" [controlGroup]='noteForm'  [controlName]="'image'"
+                      [name]="'image'"  aria-describedby="imageHelp" [placeHolder]="'Choose Image'"
+                      (click)="this.noteService.hideFormError(noteError)"
+                      (change)="onFileChange($event)"></app-input-field>
+    <div *ngIf="noteForm.controls['image'].invalid &&
+       (noteForm.controls['image'].dirty || noteForm.controls['image'].touched)"
+         class="alert alert-danger col-4" style="margin-top:20px;">
+      <div *ngIf="noteForm.controls['image'].errors.required">
+        image is required.
+      </div>
+    </div>
+  </div>
+  <div *ngIf="noteError" class="alert alert-danger col-4" style="margin-top:20px;">
+    {{ noteErrorMessage }}
+  </div>
+  <select class="col-8 custom-select " [formControlName]="'public'" [formGroup]="noteForm">
+    <option selected>Select Note Privacy</option>
+    <option value="false">Private</option>
+    <option value="true">Public</option>
+  </select>
+  <br>
+  <br>
+  <div class="row">
+    <div class="col-2">
+      <a [routerLink]="['/note',note.id]" class="btn btn-success"> &larr; Back </a>
+    </div>
+    <div class="col">
+      <button type="submit" class="btn btn-primary">Submit</button>
+    </div>
+  </div>
+  <br>
+
+</form>

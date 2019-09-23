@@ -1,0 +1,56 @@
+version: '3'
+services: 
+  db:
+    image: mysql:5.7.26
+    restart: always
+    expose: 
+      - "3306"
+    ports:
+      - "3307:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: Os@12345
+      MYSQL_DATABASE: modeso
+      MYSQL_PASSWORD: Os@12345
+  api:
+    restart: always
+    build:
+      dockerfile: Dockerfile
+      context: ./api
+    volumes:
+     - /usr/app/node_modules
+     - ./api:/user/app
+    environment:
+      - DATABASE_HOST=db
+      - DATABASE_USER=root
+      - DATABASE_PASSWORD=Os@12345
+      - DATABASE_NAME=modeso
+      - DATABASE_PORT=3306
+    depends_on:
+      - db
+    links: 
+      - db
+    ports:
+      - "3000:3000"
+    command: 
+      - /bin/bash
+      - -c
+      - | 
+          cd ./src;
+          sequelize db:migrate;
+          cd ..;
+          node index.js;
+  frontend:
+    build:
+      dockerfile: Dockerfile
+      context: ./frontend
+    volumes:
+     - /usr/app/node_modules
+     - ./frontend:/usr/app 
+    expose:
+      - "4200"
+    ports:
+      - "4200:4200"
+    command:
+      bash -c "ng serve --host 0.0.0.0 --port 4200"
+
+    

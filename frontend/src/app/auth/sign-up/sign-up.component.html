@@ -1,0 +1,69 @@
+<form  [formGroup]="registrationForm" (ngSubmit)="onSubmit()">
+  <div>
+
+      <app-input-field  [type]="'text'"  [inputFieldId]="'fullName'" [controlGroup]='registrationForm'  [controlName]="'fullName'"
+                        [name]="'fullName'"  [placeHolder]="'Enter FullName'"
+                        (click)="this.authService.hideFormError(registrationError)"></app-input-field>
+      <div *ngIf="registrationForm.controls['fullName'].invalid &&
+       (registrationForm.controls['fullName'].dirty || registrationForm.controls['fullName'].touched)"
+           class="alert alert-danger col-4" style="margin-top:20px;">
+        <div *ngIf="registrationForm.controls['fullName'].errors.required">
+          name is required.
+        </div>
+        <div *ngIf="registrationForm.controls['fullName'].errors.minlength">
+          Fullname must be more than 5 characters
+        </div>
+      </div>
+
+
+      <app-input-field  [type]="'text'"  [inputFieldId]="'userName'" [controlGroup]='registrationForm'  [controlName]="'userName'"
+                        [name]="'userName'"  [placeHolder]="'Enter userName'"
+                        (click)="this.authService.hideFormError(registrationError)"></app-input-field>
+      <div *ngIf="registrationForm.controls['userName'].invalid &&
+       (registrationForm.controls['userName'].dirty || registrationForm.controls['userName'].touched)"
+           class="alert alert-danger col-4" style="margin-top:20px;">
+        <div *ngIf="registrationForm.controls['userName'].errors.required">
+          Username is required.
+        </div>
+        <div *ngIf="registrationForm.controls['userName'].errors.minlength">
+          userName must be more than 5 characters
+        </div>
+      </div>
+
+
+      <app-input-field  [type]="'email'"  [inputFieldId]="'email'" [controlGroup]='registrationForm'  [controlName]="'email'"
+                        [name]="'email'"  aria-describedby="emailHelp" [placeHolder]="'Enter Email'"
+                        (click)="this.authService.hideFormError(registrationError)"></app-input-field>
+      <div *ngIf="registrationForm.controls['email'].invalid &&
+       (registrationForm.controls['email'].dirty || registrationForm.controls['email'].touched)"
+           class="alert alert-danger col-4" style="margin-top:20px;">
+        <div *ngIf="registrationForm.controls['email'].errors.required">
+          Email is required.
+        </div>
+        <div *ngIf="registrationForm.controls['email'].errors.email">
+          Must be Email Format
+        </div>
+      </div>
+
+
+      <app-input-field  [type]="'password'"  [inputFieldId]="'password'" [controlGroup]='registrationForm'
+                        [controlName]="'password'" [name]="'password'"  aria-describedby="passwordHelp"
+                        [placeHolder]="'Enter password'"
+                        (click)="this.authService.hideFormError(registrationError)"></app-input-field>
+      <div *ngIf="registrationForm.controls['password'].invalid &&
+       (registrationForm.controls['password'].dirty || registrationForm.controls['password'].touched)"
+           class="alert alert-danger col-4" style="margin-top:20px;">
+        <div *ngIf="registrationForm.controls['password'].errors.required">
+          Password is required.
+        </div>
+        <div *ngIf="registrationForm.controls['password'].errors.minlength">
+          Password must be more than 8 characters
+        </div>
+      </div>
+  </div>
+  <div *ngIf="registrationError" class="alert alert-danger col-4" style="margin-top:20px;">
+    {{ registrationErrorMessage }}
+  </div>
+  <button type="submit" class="btn btn-primary">Submit</button>
+
+</form>

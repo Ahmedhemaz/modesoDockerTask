@@ -1,0 +1,32 @@
+<form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+  <app-input-field [name]="'email'" [type]="'email'" [controlGroup]='loginForm'  [controlName]="'email'"
+                     [placeHolder]="'example@example.com'" [inputFieldId]="'emailField'"
+                   (click)="this.authService.hideFormError(logInError)" >
+    </app-input-field>
+  <div *ngIf="loginForm.controls['email'].invalid && (loginForm.controls['email'].dirty || loginForm.controls['email'].touched)" class="alert alert-danger col-4" style="margin-top:20px;">
+    <div *ngIf="loginForm.controls['email'].errors.required">
+      email is required.
+    </div>
+    <div *ngIf="loginForm.controls['email'].errors.email">
+      Must be Email Format
+    </div>
+  </div>
+    <app-input-field [name]="'password'" [type]="'password'" [controlGroup]='loginForm' [controlName]="'password'"
+                     [placeHolder]="'Enter Your Password'" [inputFieldId]="'passwordField'"
+                     (click)="this.authService.hideFormError(logInError)">
+    </app-input-field>
+  <div *ngIf="loginForm.controls['password'].invalid && (loginForm.controls['password'].dirty || loginForm.controls['password'].touched)" class="alert alert-danger col-4" style="margin-top:20px;">
+    <div *ngIf="loginForm.controls['password'].errors.required">
+      password is required.
+    </div>
+    <div *ngIf="loginForm.controls['password'].errors.minlength">
+      password must be more than 8 characters
+    </div>
+  </div>
+  <div *ngIf="logInError" class="alert alert-danger col-4" style="margin-top:20px;">
+    Invalid Email or Password
+  </div>
+  <button type="submit" class="btn btn-primary">Submit</button>
+
+</form>
+
