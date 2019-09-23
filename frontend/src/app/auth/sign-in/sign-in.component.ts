@@ -17,6 +17,7 @@ export class SignInComponent implements OnInit {
   constructor(private fb: FormBuilder, private authService: AuthService, private user: UserModel, private router: Router) {
       this.authService.formErrorStatus.subscribe(value => this.logInError = false);
       this.authService.logOutEmitter.subscribe(value => this.authService.authenticated = value);
+      this.authService.logInEmitter.subscribe(value => this.authService.authenticated = value);
   }
 
 
@@ -36,12 +37,11 @@ export class SignInComponent implements OnInit {
           AuthService.extractDataFromResponseToUserObject(this.user, userData);
           AuthService.saveUserDataToLocalStorage(this.user);
           this.authService.currentUser = UserService.getUserDataFromLocalStorage();
+          this.authService.logInEmitter.emit(true);
           this.authService.onNavigate(this.user);
         },
         error => this.logInError = true
       );
-    this.authService.logOutEmitter.emit(true);
-
   }
 
 

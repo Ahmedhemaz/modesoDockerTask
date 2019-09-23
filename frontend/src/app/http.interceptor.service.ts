@@ -23,6 +23,6 @@ export class HttpInterceptorService implements HttpInterceptor {
     }
 
     private isUserLoggedIn(): boolean {
-        return localStorage.getItem('user') === null ? true  : false;
+        return localStorage.getItem('user') === null ? false  : true;
     }
 }

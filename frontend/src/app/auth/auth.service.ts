@@ -11,14 +11,10 @@ import {UserService} from '../user/user.service';
 })
 export class AuthService {
 
-  constructor(private http: HttpClient, private router: Router) {
-    if (AuthService.isAuthenticated()) {
-      this.currentUser = UserService.getUserDataFromLocalStorage();
-      this.authenticated = true;
-    }
-  }
+  constructor(private http: HttpClient, private router: Router) {}
   formErrorStatus = new EventEmitter<boolean>();
   logOutEmitter = new EventEmitter<boolean>();
+  logInEmitter = new EventEmitter<boolean>();
   currentUser: UserModel = null;
   authenticated: Boolean = false;
   private Authorization_Type = 'Bearer ';
@@ -35,7 +31,7 @@ export class AuthService {
     localStorage.setItem('user', JSON.stringify(userObject));
   }
   static isAuthenticated() {
-    return (JSON.parse(localStorage.getItem('user')) != null );
+    return localStorage.getItem('user') === null ? false : true  ;
   }
 
   signIn(user: UserModel) {
