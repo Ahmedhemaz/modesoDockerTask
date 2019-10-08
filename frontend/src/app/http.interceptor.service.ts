@@ -5,7 +5,6 @@ export class HttpInterceptorService implements HttpInterceptor {
     intercept(req: HttpRequest<any>, next: HttpHandler) {
         return next.handle(this.setAuthorizationHeader(req)).pipe(
             map( response => {
-                console.log(response);
                 return response;
             })
         );
